@@ -6,16 +6,21 @@ use App\Exceptions\AppException;
 
 class TransactionsFactory
 {
-    private array $requiredFields = [
-        'bin',
-        'amount',
-        'currency',
-    ];
+    private array $requiredFields;
+
+    public function __construct()
+    {
+        $this->requiredFields = [
+            'bin',
+            'amount',
+            'currency',
+        ];
+    }
 
     public function createTransaction(array $data): Transaction {
 
         foreach ($this->requiredFields as $field) {
-            if (!isset($data[$field])) {
+            if (!array_key_exists($field, $data)) {
                 throw new AppException("Missing required field '$field' in line %s");
             }
         }
