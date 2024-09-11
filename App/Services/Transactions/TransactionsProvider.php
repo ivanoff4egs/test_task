@@ -2,24 +2,39 @@
 
 namespace App\Services\Transactions;
 
+use App\Config\AppConfig;
 use App\Config\ConfigFactory;
 use App\Exceptions\AppException;
 use RuntimeException;
 
 class TransactionsProvider implements TransactionsProviderInterface
 {
-    public function getTransactions(): array
+
+    /**
+     * @throws AppException
+     */
+    private function getInputFile(AppConfig $appConfig)
     {
-        $inputFile = ConfigFactory::createAppConfig()->getConfigValue('inputFile');
+        $inputFile = $appConfig->getConfigValue('inputFile');
+
         if (!$inputFile) {
             throw new AppException('Input file not set');
         }
 
+        return $inputFile;
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function getTransactions(AppConfig $config): array
+    {
+        $inputFile = $this->getInputFile($config);
         $transactions = [];
         $handler = fopen($inputFile, 'r');
         while ($line = fgets($handler)) {
-            if (!is_string($line) && !json_validate($line)) {
-                throw new AppException('Invalid input');
+            if (!json_validate($line)) {
+                continue;
             }
             $transactions[] = json_decode($line, true);
         }

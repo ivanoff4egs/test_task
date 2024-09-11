@@ -24,7 +24,7 @@ class TransactionsFactoryTest extends TestCase
         $this->factory = new TransactionsFactory();
     }
 
-    public function testCreateTransaction()
+    public function testCreateTransaction(): void
     {
         $transaction = $this->factory->createTransaction(self::VALID_TRANSACTION_DATA);
 
@@ -34,10 +34,11 @@ class TransactionsFactoryTest extends TestCase
         $this->assertNotEmpty($transaction->getCurrency());
     }
 
-    public function testCreateTransactionNegative()
+    public function testCreateTransactionNegative(): void
     {
         try {
             $this->factory->createTransaction(self::INVALID_TRANSACTION_DATA);
+            $this->fail('Expected exception not thrown');
         } catch (\Exception $e) {
             $this->assertInstanceOf(AppException::class, $e);
         }

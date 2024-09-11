@@ -2,13 +2,15 @@
 
 namespace App\Services\Transactions;
 
+use App\Config\AppConfig;
 use App\Exceptions\AppException;
 
 class TransactionsManager
 {
     function __construct(
-        public TransactionsProvider $transactionsProvider,
-        public TransactionsFactory $transactionsFactory
+        protected TransactionsProvider $transactionsProvider,
+        protected TransactionsFactory $transactionsFactory,
+        protected AppConfig $appConfig
     ) {}
 
 
@@ -18,7 +20,7 @@ class TransactionsManager
     public function getTransactions(): array
     {
         $transactions = [];
-        $transactionsData = $this->transactionsProvider->getTransactions();
+        $transactionsData = $this->transactionsProvider->getTransactions($this->appConfig);
         foreach ($transactionsData as $transactionData) {
             $transaction = $this->transactionsFactory->createTransaction($transactionData);
             $transactions[] = $transaction;

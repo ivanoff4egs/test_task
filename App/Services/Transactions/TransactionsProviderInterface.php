@@ -2,7 +2,9 @@
 
 namespace App\Services\Transactions;
 
+use App\Config\AppConfig;
+
 interface TransactionsProviderInterface
 {
-    public function getTransactions(): array;
+    public function getTransactions(AppConfig $config): array;
 }

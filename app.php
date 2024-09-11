@@ -13,12 +13,13 @@ if (!file_exists($inputFile)) {
     exit();
 }
 
-$AppConfig = App\Config\ConfigFactory::createAppConfig();
-$AppConfig->setConfigValue('inputFile', $inputFile);
+$appConfig = App\Config\ConfigFactory::createAppConfig();
+$appConfig->setConfigValue('inputFile', $inputFile);
 
 try {
-    $transactionsManager = App\Services\ServicesFactory::createTransactionManager();
+    $transactionsManager = App\Services\ServicesFactory::createTransactionManager($appConfig);
     $transactions = $transactionsManager->getTransactions();
+    var_dump($transactions);
 } catch (\App\Exceptions\AppException $e) {
     print $e->getMessage();
     exit();

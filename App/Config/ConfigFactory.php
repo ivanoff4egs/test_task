@@ -6,6 +6,6 @@ class ConfigFactory
 {
     public static function createAppConfig(): AppConfig
     {
-        return AppConfig::getInstance();
+        return new AppConfig();
     }
 }
