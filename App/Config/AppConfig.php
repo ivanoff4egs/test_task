@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Config;
 
@@ -11,7 +12,7 @@ class AppConfig
         return array_key_exists($key, $this->config) ? $this->config[$key] : $default;
     }
 
-    public function setConfigValue(string $key, $value)
+    public function setConfigValue(string $key, $value): void
     {
         $this->config[$key] = $value;
     }

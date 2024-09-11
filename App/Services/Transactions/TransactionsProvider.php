@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Services\Transactions;
 
 use App\Config\AppConfig;
-use App\Config\AppConfigFactory;
 use App\Exceptions\AppException;
-use RuntimeException;
 
 class TransactionsProvider implements TransactionsProviderInterface
 {

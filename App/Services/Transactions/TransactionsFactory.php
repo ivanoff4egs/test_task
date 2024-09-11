@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services\Transactions;
 
@@ -27,7 +28,7 @@ class TransactionsFactory
 
         $transaction = new Transaction();
         $transaction->setBin($data['bin']);
-        $transaction->setAmount($data['amount']);
+        $transaction->setAmount(floatval($data['amount']));
         $transaction->setCurrency($data['currency']);
 
         return $transaction;
