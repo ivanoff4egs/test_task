@@ -1,0 +1,9 @@
+{
+  "name": "serge/test_task",
+  "autoload": {
+    "classmap": ["App/", "Tests/"]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.3"
+  }
+}
