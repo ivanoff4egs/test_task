@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-class ConfigFactory
+class AppConfigFactory
 {
     public static function createAppConfig(): AppConfig
     {

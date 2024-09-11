@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\Transactions;
 
 use App\Config\AppConfig;
-use App\Config\ConfigFactory;
+use App\Config\AppConfigFactory;
 use App\Services\Transactions\Transaction;
 use App\Services\Transactions\TransactionsFactory;
 use App\Services\Transactions\TransactionsManager;
@@ -34,7 +34,7 @@ class TransactionsManagerTest extends TestCase
         $provider = $this->createMock(TransactionsProvider::class);
         $provider->method('getTransactions')->willReturn($transactions);
         $factory = new TransactionsFactory();
-        $config = ConfigFactory::createAppConfig();
+        $config = AppConfigFactory::createAppConfig();
 
         $this->transactionsManager = new TransactionsManager($provider, $factory, $config);
     }

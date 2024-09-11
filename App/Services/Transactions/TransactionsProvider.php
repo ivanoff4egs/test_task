@@ -3,7 +3,7 @@
 namespace App\Services\Transactions;
 
 use App\Config\AppConfig;
-use App\Config\ConfigFactory;
+use App\Config\AppConfigFactory;
 use App\Exceptions\AppException;
 use RuntimeException;
 

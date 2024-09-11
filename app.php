@@ -13,7 +13,7 @@ if (!file_exists($inputFile)) {
     exit();
 }
 
-$appConfig = App\Config\ConfigFactory::createAppConfig();
+$appConfig = App\Config\AppConfigFactory::createAppConfig();
 $appConfig->setConfigValue('inputFile', $inputFile);
 
 try {
