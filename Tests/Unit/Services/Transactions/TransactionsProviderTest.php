@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Services\Transactions;
 
-use App\Config\AppConfigFactory;
+use App\AppConfig;
 use App\Exceptions\AppException;
 use App\Services\Transactions\TransactionsProvider;
 use PHPUnit\Framework\TestCase;
@@ -18,8 +18,7 @@ class TransactionsProviderTest extends TestCase
 
     public function testGetTransactions(): void
     {
-        $config = AppConfigFactory::createAppConfig();
-        $config->setConfigValue('inputFile', __DIR__ . '/test_data/test_data.txt');
+        $config = new AppConfig(['inputFile' => __DIR__ . '/test_data/test_data.txt']);
 
         $transactions = $this->transactionsProvider->getTransactions($config);
         $this->assertIsArray($transactions);
@@ -28,7 +27,7 @@ class TransactionsProviderTest extends TestCase
 
     public function testGetTransactionsFileNotSet(): void
     {
-        $config = AppConfigFactory::createAppConfig();
+        $config = new AppConfig();
         try {
             $this->transactionsProvider->getTransactions($config);
             $this->fail("Expected AppException not thrown");
@@ -39,8 +38,7 @@ class TransactionsProviderTest extends TestCase
 
     public function testGetTransactionsInvalidLine(): void
     {
-        $config = AppConfigFactory::createAppConfig();
-        $config->setConfigValue('inputFile', __DIR__ . '/test_data/test_data_invalid_json.txt');
+        $config = new AppConfig(['inputFile' => __DIR__ . '/test_data/test_data_invalid_json.txt']);
 
         $transactions = $this->transactionsProvider->getTransactions($config);
         $this->assertCount(2, $transactions);

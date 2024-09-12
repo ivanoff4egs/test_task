@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions;
 
-use App\Config\AppConfig;
+use App\AppConfig;
 use App\Exceptions\AppException;
 
 class TransactionsManager

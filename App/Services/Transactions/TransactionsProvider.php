@@ -2,7 +2,7 @@
 
 namespace App\Services\Transactions;
 
-use App\Config\AppConfig;
+use App\AppConfig;
 use App\Exceptions\AppException;
 
 class TransactionsProvider implements TransactionsProviderInterface
