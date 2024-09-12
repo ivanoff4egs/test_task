@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\Transactions;
 
 use App\AppConfig;
-use App\Config\AppConfigFactory;
 use App\Services\Transactions\Transaction;
 use App\Services\Transactions\TransactionsFactory;
 use App\Services\Transactions\TransactionsManager;
