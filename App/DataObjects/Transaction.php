@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Services\Transactions;
+namespace App\DataObjects;
 
 class Transaction
 {
@@ -9,6 +9,18 @@ class Transaction
     private float $amount;
 
     private string $currency;
+
+    private float $comission;
+
+    public function getComission(): float
+    {
+        return $this->comission;
+    }
+
+    public function setComission(float $comission): void
+    {
+        $this->comission = $comission;
+    }
 
     public function getAmount(): float
     {

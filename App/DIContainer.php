@@ -2,24 +2,21 @@
 
 namespace App;
 
-use App\Services\Http\RequestManager;
-use App\Services\Transactions\TransactionsFactory;
-use App\Services\Transactions\TransactionsManager;
-use App\Services\Transactions\TransactionsProvider;
-use GuzzleHttp\Client;
+use App\DataObjects\DataObjectFactory;
+use App\Services\TransactionsManager;
 
 class DIContainer
 {
+    private array $services;
+
+    private static self $instance;
+
     protected function __construct()
     {
         $this->services = [];
     }
 
-    protected function __clone(){}
-
-    private array $services;
-
-    private static self $instance;
+    protected function __clone() {}
 
     public static function getInstance(): DIContainer
     {
@@ -30,25 +27,15 @@ class DIContainer
         return self::$instance;
     }
 
-    public function getTransactionManager(AppConfig $appConfig): TransactionsManager
+    public function getTransactionManager(string $inputFile): TransactionsManager
     {
         if (!array_key_exists(TransactionsManager::class, $this->services)) {
             $this->services[TransactionsManager::class] = new TransactionsManager(
-                new TransactionsProvider(),
-                new TransactionsFactory(),
-                $appConfig
+                new DataObjectFactory(),
+                $inputFile
             );
         }
 
         return $this->services[TransactionsManager::class];
-    }
-
-    public function getRequestManager(AppConfig $appConfig): RequestManager
-    {
-        if (!array_key_exists(RequestManager::class, $this->services)) {
-            $this->services[RequestManager::class] = new RequestManager(new Client(), $appConfig);
-        }
-
-        return $this->services[RequestManager::class];
     }
 }

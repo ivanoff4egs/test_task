@@ -13,15 +13,16 @@ if (!file_exists($inputFile)) {
     exit();
 }
 
-$appConfig = new \App\AppConfig(['inputFile' => $inputFile]);
-
 try {
-    $transactionsManager = \App\DIContainer::getInstance()->getTransactionManager($appConfig);
+    $transactionsManager = \App\DIContainer::getInstance()->getTransactionManager($inputFile);
     $transactions = $transactionsManager->getTransactions();
-    var_dump($transactions);
 } catch (\App\Exceptions\AppException $e) {
     print $e->getMessage();
     exit();
 }
+
+//foreach ($transactions as $transaction) {
+//
+//}
 
 

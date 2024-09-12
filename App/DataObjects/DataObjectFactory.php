@@ -1,31 +1,26 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace App\Services\Transactions;
+namespace App\DataObjects;
 
 use App\Exceptions\AppException;
 
-class TransactionsFactory
+class DataObjectFactory
 {
-    private array $requiredFields;
-
-    public function __construct()
+    public function createTransaction(array $data): Transaction
     {
-        $this->requiredFields = [
+        $requiredFields = [
             'bin',
             'amount',
             'currency',
         ];
-    }
 
-    public function createTransaction(array $data): Transaction {
-
-        foreach ($this->requiredFields as $field) {
+        $transaction = new Transaction();
+        foreach ($requiredFields as $field) {
             if (!array_key_exists($field, $data)) {
                 throw new AppException("Missing required field '$field' in line %s");
             }
         }
 
-        $transaction = new Transaction();
         $transaction->setBin($data['bin']);
         $transaction->setAmount(floatval($data['amount']));
         $transaction->setCurrency($data['currency']);
