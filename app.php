@@ -33,8 +33,7 @@ try {
      */
     foreach ($transactions as $transaction) {
             $card = $cardInfoManager->getCardInfo($transaction->getBin());
-            var_dump($card);
-            die();
+            $isEUCard = $cardInfoManager->isEUCard($card->getCountry());
     }
 
 
