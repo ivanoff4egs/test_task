@@ -5,6 +5,7 @@ namespace Tests\Unit\Services;
 use App\Config;
 use App\DataObjects\DataObjectFactory;
 use App\DataObjects\Transaction;
+use App\Exceptions\AppException;
 use App\Services\TransactionsService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -26,6 +27,9 @@ class TransactionsServiceTest extends TestCase
         ];
     }
 
+    /**
+     * @throws AppException
+     */
     #[DataProvider('getTransactionsDataProvider')]
     public function testGetTransactions(string $inputFile): void
     {
