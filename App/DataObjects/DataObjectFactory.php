@@ -6,6 +6,9 @@ use App\Exceptions\AppException;
 
 class DataObjectFactory
 {
+    /**
+     * @throws AppException
+     */
     public function createTransaction(array $data): Transaction
     {
         $requiredFields = [
@@ -29,24 +32,21 @@ class DataObjectFactory
     }
 
 
-    public function createCard(array $fieldsMap, array $data): Card
+    public function createCard(array $data): Card
     {
         $card = new Card();
-
-        foreach ($fieldsMap as $cardProperty => $sourceProperty) {
-            $value = $data;
-            foreach (explode('.', $sourceProperty) as $key) {
-                if (!isset($value[$key])) {
-                    throw new AppException("Card field mapping error. `{$key}` not found in the response");
-                }
-                $value = $value[$key];
-            }
-
-            $method = 'set' . ucfirst($cardProperty);
-            $card->$method($value);
-        }
+        $card->setCountry($data['country']['alpha2']);
 
         return $card;
+    }
+
+    public function createCurrencyRate(string $to, float $rate): CurrencyRate
+    {
+        $currencyRate = new CurrencyRate();
+        $currencyRate->setCurrencyTo($to);
+        $currencyRate->setRate($rate);
+
+        return $currencyRate;
     }
 
 }

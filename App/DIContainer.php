@@ -6,6 +6,7 @@ use App\DataObjects\DataObjectFactory;
 use App\Exceptions\AppException;
 use App\Providers\ProviderFactory;
 use App\Services\CardInfoService;
+use App\Services\RatesService;
 use App\Services\TransactionsService;
 use GuzzleHttp\Client;
 
@@ -40,10 +41,11 @@ class DIContainer
         return $this->services[Client::class];
     }
 
-    public function getTransactionService(string $inputFile): TransactionsService
+    public function getTransactionService(Config $config, string $inputFile): TransactionsService
     {
         if (!array_key_exists(TransactionsService::class, $this->services)) {
             $this->services[TransactionsService::class] = new TransactionsService(
+                $config,
                 new DataObjectFactory(),
                 $inputFile
             );
@@ -61,18 +63,34 @@ class DIContainer
             $provider = $config->get('default_card_info_provider');
             $providerConfigs = $config->get('card_info_providers');
             $providerConfig = $providerConfigs[$provider];
-            $client =
-            $provider = (new ProviderFactory())->createCardInfoProvider(
+            $provider = (new ProviderFactory())->createProvider(
                 $this->getHttpClient(),
                 $providerConfig
             );
 
-            $this->services[CardInfoService::class] = new CardInfoService(
-                $provider,
-                new DataObjectFactory()
-            );
+            $this->services[CardInfoService::class] = new CardInfoService($provider, new DataObjectFactory());
         }
 
         return $this->services[CardInfoService::class];
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function getRatesService(Config $config): RatesService
+    {
+        if (!isset($this->services[RatesService::class])) {
+            $provider = $config->get('default_rates_provider');
+            $providerConfigs = $config->get('rates_providers');
+            $providerConfig = $providerConfigs[$provider];
+            $provider = (new ProviderFactory())->createProvider(
+                $this->getHttpClient(),
+                $providerConfig
+            );
+
+            $this->services[RatesService::class] = new RatesService($provider, new DataObjectFactory());
+        }
+
+        return $this->services[RatesService::class];
     }
 }

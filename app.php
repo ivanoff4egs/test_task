@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 use App\Config;
 use App\DataObjects\Transaction;
@@ -19,30 +19,45 @@ if (!file_exists($inputFile)) {
     exit();
 }
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+
+try {
+    $dotenv->required('EXCHANGERATES_ACCESS_KEY');
+} catch (RuntimeException $e) {
+    print('EXCHANGERATES_ACCESS_KEY is not set. Check your .env file.' . PHP_EOL);
+    exit();
+}
+
 $configData = require_once(Config::CONFIG_FILE);
 $config = new Config($configData);
 
 try {
-    $transactionsManager = DIContainer::getInstance()->getTransactionService($inputFile);
-    $cardInfoManager = DIContainer::getInstance()->getCardInfoService($config);
+    $transactionsService = DIContainer::getInstance()->getTransactionService($config, $inputFile);
+    $cardInfoService = DIContainer::getInstance()->getCardInfoService($config);
+    $ratesService = DIContainer::getInstance()->getRatesService($config);
 
-    $transactions = $transactionsManager->getTransactions();
+    $transactions = $transactionsService->getTransactions();
 
     /**
      * @var Transaction $transaction
      */
     foreach ($transactions as $transaction) {
-            $card = $cardInfoManager->getCardInfo($transaction->getBin());
-            $isEUCard = $cardInfoManager->isEUCard($card->getCountry());
-            var_dump($card);
-            var_dump($isEUCard);
-            die();
+        $card = $cardInfoService->getCardInfo($transaction->getBin());
+        $isEUCard = $cardInfoService->isEUCard($card->getCountry());
+
+        $rate = $ratesService->getRate($transaction->getCurrency());
+        $transaction = $transactionsService->calculateComission(
+            currencyRate: $rate,
+            transaction: $transaction,
+            isEuCard: $isEUCard
+        );
+        print ($transaction->getComission() . 'EUR' . PHP_EOL);
     }
-
-
 } catch (AppException $e) {
     print ($e->getMessage() . PHP_EOL);
-    exit();
 }
+
+exit(0);
 
 

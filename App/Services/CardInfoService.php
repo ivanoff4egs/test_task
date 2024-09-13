@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -22,14 +22,14 @@ readonly class CardInfoService
     {
         $cardData = $this->provider->retrieveData($bin);
 
-        return $this->dataObjectFactory->createCard($this->provider->getFieldsMap(), $cardData);
+        if (!isset($cardData['country']['alpha2'])) {
+            throw new AppException("Missing required field 'country.alpha2'");
+        }
+        return $this->dataObjectFactory->createCard($cardData);
     }
 
     public function isEUCard(string $alpha2Country): bool
     {
-        var_dump($alpha2Country);
-        var_dump(EUCountries::cases());
-
         return in_array($alpha2Country, array_column(EUCountries::cases(), 'name'));
     }
 }

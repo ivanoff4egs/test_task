@@ -1,15 +1,26 @@
 <?php
 
+use App\Providers\BinlistCardInfoProvider;
+use App\Providers\ExchangeratesRatesProvider;
+
 return [
+    'eu_cards_comission' => 0.01,
+    'non_eu_cards_comission' => 0.02,
     'default_card_info_provider' => 'binlist',
+    'default_rates_provider' => 'exchangerates',
     'card_info_providers' => [
         'binlist' => [
-            'class' => \App\Providers\BinlistCardInfoProvider::class,
+            'class' => BinlistCardInfoProvider::class,
             'base_uri' => 'https://lookup.binlist.net',
             'method' => 'GET',
-            'fields_map' => [
-                'country' => 'country.alpha2',
-            ]
         ]
     ],
+    'rates_providers' => [
+        'exchangerates' => [
+            'class' => ExchangeratesRatesProvider::class,
+            'access_key' => $_ENV['EXCHANGERATES_ACCESS_KEY'],
+            'base_uri' => 'https://api.exchangeratesapi.io/latest',
+            'method' => 'GET',
+        ],
+    ]
 ];

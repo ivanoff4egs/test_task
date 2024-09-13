@@ -6,7 +6,7 @@ use App\Exceptions\AppException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class BinlistCardInfoProvider implements ProviderInterface
+class ExchangeratesRatesProvider implements ProviderInterface
 {
     public function __construct(
         protected Client $client,
@@ -18,13 +18,12 @@ class BinlistCardInfoProvider implements ProviderInterface
      */
     public function retrieveData(string $path = ''): array
     {
-        if (!$path) {
-            throw new AppException("Bin is required");
-        }
-
-        $uri = $this->config['base_uri'] . '/' . $path;
         try {
-            $response = $this->client->request($this->config['method'], $uri);
+            $response = $this->client->request(
+                method: $this->config['method'],
+                uri: $this->config['base_uri'],
+                options: ['query' => ['access_key' => $this->config['access_key']]]
+            );
         } catch (GuzzleException $e) {
             throw new AppException($e->getMessage());
         }
@@ -34,6 +33,12 @@ class BinlistCardInfoProvider implements ProviderInterface
             throw new AppException(json_last_error_msg());
         }
 
-        return json_decode($data, true);
+        $data = json_decode($data, true);
+
+        if (isset($data['error'])) {
+            throw new AppException($data['error']['info']);
+        }
+
+        return $data;
     }
 }

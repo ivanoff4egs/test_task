@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class ProviderFactory
 {
-    public function createCardInfoProvider(Client $client, array $providerConfig): ProviderInterface
+    public function createProvider(Client $client, array $providerConfig): ProviderInterface
     {
         $class = $providerConfig['class'];
 
