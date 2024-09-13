@@ -33,9 +33,10 @@ $configData = require_once(Config::CONFIG_FILE);
 $config = new Config($configData);
 
 try {
-    $transactionsService = DIContainer::getInstance()->getTransactionService($config, $inputFile);
+    $transactionsService = DIContainer::getInstance()->getTransactionsService($config, $inputFile);
     $cardInfoService = DIContainer::getInstance()->getCardInfoService($config);
     $ratesService = DIContainer::getInstance()->getRatesService($config);
+    $ratesService->getRates();
 
     $transactions = $transactionsService->getTransactions();
 

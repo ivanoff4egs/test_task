@@ -41,7 +41,7 @@ class DIContainer
         return $this->services[Client::class];
     }
 
-    public function getTransactionService(Config $config, string $inputFile): TransactionsService
+    public function getTransactionsService(Config $config, string $inputFile): TransactionsService
     {
         if (!array_key_exists(TransactionsService::class, $this->services)) {
             $this->services[TransactionsService::class] = new TransactionsService(

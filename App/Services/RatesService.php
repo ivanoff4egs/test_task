@@ -17,21 +17,20 @@ class RatesService
     public function __construct(
         private readonly ProviderInterface $provider,
         private readonly DataObjectFactory $dataObjectFactory,
-    ) {
-        $this->rates = $this->getRates();
-    }
+    ) {}
 
     /**
      * @throws AppException
      */
-    private function getRates(): array
+    public function getRates(): array
     {
         $ratesData = $this->provider->retrieveData();
         if (!isset($ratesData['rates'])) {
             throw new AppException("Missing required field 'rates'");
         }
+        $this->rates = $ratesData['rates'];
 
-        return $ratesData['rates'];
+        return $this->rates;
     }
 
     /**
