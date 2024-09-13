@@ -20,7 +20,7 @@ class DIContainerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$configData = require_once 'test_config.php';
+        self::$configData = require 'test_config.php';
     }
 
     public static function tearDownAfterClass(): void
@@ -69,5 +69,4 @@ class DIContainerTest extends TestCase
 
         $this->assertInstanceOf(RatesService::class, $ratesService);
     }
-
 }

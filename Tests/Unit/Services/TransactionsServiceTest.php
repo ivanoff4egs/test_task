@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\Config;
 use App\DataObjects\DataObjectFactory;
 use App\DataObjects\Transaction;
 use App\Services\TransactionsService;
@@ -28,7 +29,9 @@ class TransactionsServiceTest extends TestCase
     #[DataProvider('getTransactionsDataProvider')]
     public function testGetTransactions(string $inputFile): void
     {
+
         $this->transactionsManager = new TransactionsService(
+            new Config([]),
             new DataObjectFactory(),
             $inputFile
         );
