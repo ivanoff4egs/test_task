@@ -39,8 +39,11 @@ class TransactionsService
     /**
      * @throws AppException
      */
-    public function calculateComission(CurrencyRate $currencyRate, Transaction $transaction, bool $isEuCard): Transaction
-    {
+    public function calculateComission(
+        CurrencyRate $currencyRate,
+        Transaction $transaction,
+        bool $isEuCard
+    ): Transaction {
         $amount = $transaction->getAmount() / $currencyRate->getRate();
         $comission = $isEuCard ? $this->config->get('eu_cards_comission') : $this->config->get('non_eu_cards_comission');
         $comissionAmount = round($amount * $comission, 2);

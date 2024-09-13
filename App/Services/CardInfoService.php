@@ -8,7 +8,7 @@ use App\Enums\EUCountries;
 use App\Exceptions\AppException;
 use App\Providers\ProviderInterface;
 
-readonly class CardInfoService
+class CardInfoService
 {
     public function __construct(
         private ProviderInterface $provider,

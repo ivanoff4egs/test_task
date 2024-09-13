@@ -8,7 +8,7 @@ class Config
 {
     public const string CONFIG_FILE = 'config.php';
 
-    public function __construct(private readonly array $configData)
+    public function __construct(private array $configData)
     {}
 
     /**

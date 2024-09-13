@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Config;
 use App\DIContainer;
 use App\Services\TransactionsService;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -12,7 +13,10 @@ class DIContainerTest extends TestCase
 {
     public function testGetTransactionService()
     {
+        $configData = require_once "test_config.php";
+        $config = new Config($configData);
         $transactionManager = DIContainer::getInstance()->getTransactionService(
+            $config,
             __DIR__ . '/Services/test_data/test_data.txt'
         );
 
