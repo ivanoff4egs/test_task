@@ -27,4 +27,26 @@ class DataObjectFactory
 
         return $transaction;
     }
+
+
+    public function createCard(array $fieldsMap, array $data): Card
+    {
+        $card = new Card();
+
+        foreach ($fieldsMap as $cardProperty => $sourceProperty) {
+            $value = $data;
+            foreach (explode('.', $sourceProperty) as $key) {
+                if (!isset($value[$key])) {
+                    throw new AppException("Card field mapping error. `{$key}` not found in the response");
+                }
+                $value = $value[$key];
+            }
+
+            $method = 'set' . ucfirst($cardProperty);
+            $card->$method($value);
+        }
+
+        return $card;
+    }
+
 }

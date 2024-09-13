@@ -1,8 +1,14 @@
 <?php
+
+use App\Config;
+use App\DataObjects\Transaction;
+use App\DIContainer;
+use App\Exceptions\AppException;
+
 require_once 'vendor/autoload.php';
 
 if (!isset($argv[1])) {
-    print("Input file is required\n");
+    print("Input file is required\r\n");
     exit();
 }
 
@@ -13,16 +19,28 @@ if (!file_exists($inputFile)) {
     exit();
 }
 
+$configData = require_once(Config::CONFIG_FILE);
+$config = new Config($configData);
+
 try {
-    $transactionsManager = \App\DIContainer::getInstance()->getTransactionManager($inputFile);
+    $transactionsManager = DIContainer::getInstance()->getTransactionManager($inputFile);
+    $cardInfoManager = DIContainer::getInstance()->getCardInfoManager($config);
+
     $transactions = $transactionsManager->getTransactions();
-} catch (\App\Exceptions\AppException $e) {
-    print $e->getMessage();
+
+    /**
+     * @var Transaction $transaction
+     */
+    foreach ($transactions as $transaction) {
+            $card = $cardInfoManager->getCardInfo($transaction->getBin());
+            var_dump($card);
+            die();
+    }
+
+
+} catch (AppException $e) {
+    print ($e->getMessage() . PHP_EOL);
     exit();
 }
-
-//foreach ($transactions as $transaction) {
-//
-//}
 
 
