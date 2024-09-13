@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\DIContainer;
 use App\Services\TransactionsService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use App\DIContainer;
 
 #[CoversClass(DIContainer::class)]
 class DIContainerTest extends TestCase
