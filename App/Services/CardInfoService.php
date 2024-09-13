@@ -8,7 +8,7 @@ use App\Enums\EUCountries;
 use App\Exceptions\AppException;
 use App\Providers\ProviderInterface;
 
-readonly class CardInfoManager
+readonly class CardInfoService
 {
     public function __construct(
         private ProviderInterface $provider,
@@ -27,6 +27,9 @@ readonly class CardInfoManager
 
     public function isEUCard(string $alpha2Country): bool
     {
-        return in_array($alpha2Country, EUCountries::cases());
+        var_dump($alpha2Country);
+        var_dump(EUCountries::cases());
+
+        return in_array($alpha2Country, array_column(EUCountries::cases(), 'name'));
     }
 }

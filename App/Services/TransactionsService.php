@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\DataObjects\DataObjectFactory;
 
-class TransactionsManager
+class TransactionsService
 {
     function __construct(
         protected DataObjectFactory $dataObjectFactory,

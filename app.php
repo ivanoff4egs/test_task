@@ -23,8 +23,8 @@ $configData = require_once(Config::CONFIG_FILE);
 $config = new Config($configData);
 
 try {
-    $transactionsManager = DIContainer::getInstance()->getTransactionManager($inputFile);
-    $cardInfoManager = DIContainer::getInstance()->getCardInfoManager($config);
+    $transactionsManager = DIContainer::getInstance()->getTransactionService($inputFile);
+    $cardInfoManager = DIContainer::getInstance()->getCardInfoService($config);
 
     $transactions = $transactionsManager->getTransactions();
 
@@ -34,6 +34,9 @@ try {
     foreach ($transactions as $transaction) {
             $card = $cardInfoManager->getCardInfo($transaction->getBin());
             $isEUCard = $cardInfoManager->isEUCard($card->getCountry());
+            var_dump($card);
+            var_dump($isEUCard);
+            die();
     }
 
 

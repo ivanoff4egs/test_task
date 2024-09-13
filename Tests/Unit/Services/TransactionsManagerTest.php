@@ -4,18 +4,18 @@ namespace Tests\Unit\Services;
 
 use App\DataObjects\DataObjectFactory;
 use App\DataObjects\Transaction;
-use App\Services\TransactionsManager;
+use App\Services\TransactionsService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(TransactionsManager::class)]
+#[CoversClass(TransactionsService::class)]
 class TransactionsManagerTest extends TestCase
 {
     private const string VALID_INPUT_FILE = __DIR__ . '/test_data/test_data.txt';
     private const string INVALID_INPUT_FILE = __DIR__ . '/test_data/test_data_invalid.txt';
 
-    private TransactionsManager $transactionsManager;
+    private TransactionsService $transactionsManager;
 
     public static function getTransactionsDataProvider(): array
     {
@@ -28,7 +28,7 @@ class TransactionsManagerTest extends TestCase
     #[DataProvider('getTransactionsDataProvider')]
     public function testGetTransactions(string $inputFile): void
     {
-        $this->transactionsManager = new TransactionsManager(
+        $this->transactionsManager = new TransactionsService(
             new DataObjectFactory(),
             $inputFile
         );

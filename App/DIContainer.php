@@ -5,8 +5,8 @@ namespace App;
 use App\DataObjects\DataObjectFactory;
 use App\Exceptions\AppException;
 use App\Providers\ProviderFactory;
-use App\Services\CardInfoManager;
-use App\Services\TransactionsManager;
+use App\Services\CardInfoService;
+use App\Services\TransactionsService;
 use GuzzleHttp\Client;
 
 class DIContainer
@@ -40,24 +40,24 @@ class DIContainer
         return $this->services[Client::class];
     }
 
-    public function getTransactionManager(string $inputFile): TransactionsManager
+    public function getTransactionService(string $inputFile): TransactionsService
     {
-        if (!array_key_exists(TransactionsManager::class, $this->services)) {
-            $this->services[TransactionsManager::class] = new TransactionsManager(
+        if (!array_key_exists(TransactionsService::class, $this->services)) {
+            $this->services[TransactionsService::class] = new TransactionsService(
                 new DataObjectFactory(),
                 $inputFile
             );
         }
 
-        return $this->services[TransactionsManager::class];
+        return $this->services[TransactionsService::class];
     }
 
     /**
      * @throws AppException
      */
-    public function getCardInfoManager(Config $config): CardInfoManager
+    public function getCardInfoService(Config $config): CardInfoService
     {
-        if (!array_key_exists(CardInfoManager::class, $this->services)) {
+        if (!array_key_exists(CardInfoService::class, $this->services)) {
             $provider = $config->get('default_card_info_provider');
             $providerConfigs = $config->get('card_info_providers');
             $providerConfig = $providerConfigs[$provider];
@@ -67,12 +67,12 @@ class DIContainer
                 $providerConfig
             );
 
-            $this->services[CardInfoManager::class] = new CardInfoManager(
+            $this->services[CardInfoService::class] = new CardInfoService(
                 $provider,
                 new DataObjectFactory()
             );
         }
 
-        return $this->services[CardInfoManager::class];
+        return $this->services[CardInfoService::class];
     }
 }

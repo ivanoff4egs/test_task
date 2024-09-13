@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Services\TransactionsManager;
+use App\Services\TransactionsService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use App\DIContainer;
@@ -10,12 +10,12 @@ use App\DIContainer;
 #[CoversClass(DIContainer::class)]
 class DIContainerTest extends TestCase
 {
-    public function testGetTransactionManager()
+    public function testGetTransactionService()
     {
-        $transactionManager = DIContainer::getInstance()->getTransactionManager(
+        $transactionManager = DIContainer::getInstance()->getTransactionService(
             __DIR__ . '/Services/test_data/test_data.txt'
         );
 
-        $this->assertInstanceOf(TransactionsManager::class, $transactionManager);
+        $this->assertInstanceOf(TransactionsService::class, $transactionManager);
     }
 }
