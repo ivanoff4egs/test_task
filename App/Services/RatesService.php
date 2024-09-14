@@ -33,7 +33,7 @@ class RatesService
     /**
      * @throws AppException
      */
-    public function getRate($currency): CurrencyRate
+    public function getRate(string $currency): CurrencyRate
     {
         $rateValue = $this->rates[$currency] ?? null;
         if (!$rateValue) {
