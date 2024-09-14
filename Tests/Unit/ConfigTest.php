@@ -13,7 +13,7 @@ class ConfigTest extends TestCase
 {
     private Config $config;
 
-    public static function getDataProvider()
+    public static function getDataProvider(): array
     {
         return [
             [require "test_config.php"],
