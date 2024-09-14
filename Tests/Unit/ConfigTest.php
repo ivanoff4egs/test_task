@@ -17,7 +17,7 @@ class ConfigTest extends TestCase
     {
         return [
             [require "test_config.php"],
-            [[]]
+            [[]],
         ];
     }
 

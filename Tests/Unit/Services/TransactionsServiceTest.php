@@ -3,6 +3,8 @@
 namespace Tests\Unit\Services;
 
 use App\Config;
+use App\DataObjects\Comission;
+use App\DataObjects\CurrencyRate;
 use App\DataObjects\DataObjectFactory;
 use App\DataObjects\Transaction;
 use App\Exceptions\AppException;
@@ -17,7 +19,7 @@ class TransactionsServiceTest extends TestCase
     private const string VALID_INPUT_FILE = __DIR__ . '/../test_data/test_data.txt';
     private const string INVALID_INPUT_FILE = __DIR__ . '/../test_data/test_data_invalid.txt';
 
-    private TransactionsService $transactionsManager;
+    private TransactionsService $transactionsService;
 
     public static function getTransactionsDataProvider(): array
     {
@@ -34,13 +36,13 @@ class TransactionsServiceTest extends TestCase
     public function testGetTransactions(string $inputFile): void
     {
 
-        $this->transactionsManager = new TransactionsService(
+        $this->transactionsService = new TransactionsService(
             new Config([]),
             new DataObjectFactory(),
             $inputFile
         );
 
-        $transactions = $this->transactionsManager->getTransactions();
+        $transactions = $this->transactionsService->getTransactions();
 
         $this->assertContainsOnlyInstancesOf(Transaction::class, $transactions);
 
@@ -49,6 +51,37 @@ class TransactionsServiceTest extends TestCase
         } else {
             $this->assertCount(2, $transactions);
         }
+    }
+
+    public static function calculateComissionDataProvider(): array
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
+
+    #[DataProvider('calculateComissionDataProvider')]
+    public function testCalculateComission(bool $isEuCard)
+    {
+        $this->transactionsService = new TransactionsService(
+            new Config(require __DIR__ . '/../test_config.php'),
+            new DataObjectFactory(),
+            ''
+        );
+
+        $rate = new CurrencyRate();
+        $rate->setRate(1.1);
+
+        $transaction = new Transaction();
+        $transaction->setAmount(100);
+
+        $transaction = $this->transactionsService->calculateComission($rate, $transaction, $isEuCard);
+        $this->assertInstanceOf(Comission::class, $transaction->getComission());
+        $comission = $transaction->getComission();
+        $isEuCard
+            ? $this->assertEquals(0.91, $comission->getAmount())
+            : $this->assertEquals(1.82, $comission->getAmount());
     }
 
     protected function tearDown(): void

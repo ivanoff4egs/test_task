@@ -62,7 +62,7 @@ class BinlistCardInfoProviderTest extends TestCase
     {
         return [
             ['bin'],
-            ['']
+            [''],
         ];
     }
 

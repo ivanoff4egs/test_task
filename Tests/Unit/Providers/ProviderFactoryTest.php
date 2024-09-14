@@ -31,7 +31,7 @@ class ProviderFactoryTest extends TestCase
         return [
             [['class' => BinlistCardInfoProvider::class], true],
             [['class' => 'UnknownClass'], false],
-            [[], false]
+            [[], false],
         ];
     }
 

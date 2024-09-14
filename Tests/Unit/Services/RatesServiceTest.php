@@ -47,7 +47,7 @@ class RatesServiceTest extends TestCase
 
         return [
             [$providerResponse],
-            [[]]
+            [[]],
         ];
     }
 

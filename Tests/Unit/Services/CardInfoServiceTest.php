@@ -43,10 +43,10 @@ class CardInfoServiceTest extends TestCase
 
     public static function isEUCardDataProvider(): array
     {
-        $euCard = $nonEuCard = new Card();
+        $euCard = new Card();
+        $nonEuCard = new Card();
         $euCard->setCountry('DE');
-        $nonEuCard->setCountry('JP');
-
+        $nonEuCard->setCountry('US');
 
         return [
             [$euCard],
@@ -59,6 +59,6 @@ class CardInfoServiceTest extends TestCase
     {
         $result = $this->cardInfoService->isEUCard($card);
 
-        $card->getCountry() === 'JP' ? $this->assertFalse($result) : $this->assertTrue($result);
+        $card->getCountry() === 'US' ? $this->assertFalse($result) : $this->assertTrue($result);
     }
 }

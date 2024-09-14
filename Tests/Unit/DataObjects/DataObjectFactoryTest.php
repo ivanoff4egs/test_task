@@ -33,7 +33,7 @@ class DataObjectFactoryTest extends TestCase
     {
         return [
             [self::VALID_TRANSACTION_DATA, true],
-            [self::INVALID_TRANSACTION_DATA, false]
+            [self::INVALID_TRANSACTION_DATA, false],
         ];
     }
 
