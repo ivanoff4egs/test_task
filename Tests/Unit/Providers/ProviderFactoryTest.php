@@ -14,6 +14,18 @@ use PHPUnit\Framework\TestCase;
 class ProviderFactoryTest extends TestCase
 {
 
+    private ProviderFactory $providerFactory;
+
+    protected function setUp(): void
+    {
+        $this->providerFactory = new ProviderFactory();
+    }
+
+    protected function tearDown(): void
+    {
+        unset($this->providerFactory);
+    }
+
     public static function createProviderDataProvider(): array
     {
         return [
@@ -30,7 +42,7 @@ class ProviderFactoryTest extends TestCase
             $this->expectException(AppException::class);
         }
 
-        $provider = (new ProviderFactory())->createProvider(
+        $provider = $this->providerFactory->createProvider(
             $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock(),
             $providerConfig
         );
