@@ -21,7 +21,9 @@ class CardInfoServiceTest extends TestCase
         $provider = $this->getMockBuilder(BinlistCardInfoProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $provider->method('retrieveData')->willReturn(require 'test_data/binlist_response.php');
+        $provider->method('retrieveData')->willReturn(
+            require __DIR__ . '/../test_data/binlist_response.php'
+        );
         $this->cardInfoService = new CardInfoService(
             $provider,
             new DataObjectFactory(),

@@ -34,7 +34,7 @@ class RatesServiceTest extends TestCase
     {
         return json_decode(
             file_get_contents(
-                __DIR__ . '/test_data/exchangerates_response.json',
+                __DIR__ . '/../test_data/exchangerates_response.json',
                 true
             ),
             true

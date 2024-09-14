@@ -3,27 +3,25 @@
 namespace Tests\Unit\Providers;
 
 use App\Exceptions\AppException;
-use App\Providers\BinlistCardInfoProvider;
+use App\Providers\ExchangeratesRatesProvider;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(BinlistCardInfoProvider::class)]
-class BinlistCardInfoProviderTest extends TestCase
+#[CoversClass(ExchangeratesRatesProvider::class)]
+class ExchangeratesRatesProviderTest extends TestCase
 {
-
     private static array | null $configData;
 
-    private BinlistCardInfoProvider $provider;
+    private ExchangeratesRatesProvider $provider;
 
     public static function setUpBeforeClass(): void
     {
         $appConfig = require __DIR__ . '/../test_config.php';
-        self::$configData = $appConfig['card_info_providers']['binlist'];
+        self::$configData = $appConfig['rates_providers']['exchangerates'];
     }
 
     public static function tearDownAfterClass(): void
@@ -42,7 +40,7 @@ class BinlistCardInfoProviderTest extends TestCase
         $response = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
         $responseBody = $this->getMockBuilder(Stream::class)->disableOriginalConstructor()->getMock();
         $responseBody->method('getContents')->willReturn(
-            file_get_contents(__DIR__ . '/../test_data/binlist_response.json')
+            file_get_contents(__DIR__ . '/../test_data/exchangerates_response.json')
         );
         $response->method('getBody')->willReturn($responseBody);
         $client->method('request')->willReturn($response);
@@ -58,23 +56,10 @@ class BinlistCardInfoProviderTest extends TestCase
         return $client;
     }
 
-    public static function retrieveDataDataProvider(): array
+    public function testRetrieveData()
     {
-        return [
-            ['bin'],
-            ['']
-        ];
-    }
-
-    #[DataProvider('retrieveDataDataProvider')]
-    public function testRetrieveData(string $bin)
-    {
-        if (!$bin) {
-            $this->expectException(AppException::class);
-        }
-
-        $this->provider = new BinlistCardInfoProvider($this->getClientMock(), self::$configData);
-        $data = $this->provider->retrieveData($bin);
+        $this->provider = new ExchangeratesRatesProvider($this->getClientMock(), self::$configData);
+        $data = $this->provider->retrieveData();
 
         $this->assertIsArray($data);
         $this->assertNotEmpty($data);
@@ -83,7 +68,7 @@ class BinlistCardInfoProviderTest extends TestCase
     public function testGetDataException()
     {
         $this->expectException(AppException::class);
-        $this->provider = new BinlistCardInfoProvider($this->getClientMockException(), self::$configData);
-        $this->provider->retrieveData('test_bin');
+        $this->provider = new ExchangeratesRatesProvider($this->getClientMockException(), self::$configData);
+        $this->provider->retrieveData();
     }
 }

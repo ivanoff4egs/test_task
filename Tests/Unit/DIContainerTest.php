@@ -44,7 +44,7 @@ class DIContainerTest extends TestCase
     {
         $transactionService = $this->container->getTransactionsService(
             $this->config,
-            __DIR__ . '/Services/test_data/test_data.txt'
+            __DIR__ . '/../test_data/test_data.txt'
         );
 
         $this->assertInstanceOf(TransactionsService::class, $transactionService);

@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(TransactionsService::class)]
 class TransactionsServiceTest extends TestCase
 {
-    private const string VALID_INPUT_FILE = __DIR__ . '/test_data/test_data.txt';
-    private const string INVALID_INPUT_FILE = __DIR__ . '/test_data/test_data_invalid.txt';
+    private const string VALID_INPUT_FILE = __DIR__ . '/../test_data/test_data.txt';
+    private const string INVALID_INPUT_FILE = __DIR__ . '/../test_data/test_data_invalid.txt';
 
     private TransactionsService $transactionsManager;
 
