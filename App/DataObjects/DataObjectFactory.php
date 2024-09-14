@@ -49,4 +49,13 @@ class DataObjectFactory
         return $currencyRate;
     }
 
+    public function createComission(string $currency, float $amount): Comission
+    {
+        $comission = new Comission();
+        $comission->setCurrency($currency);
+        $comission->setAmount($amount);
+
+        return $comission;
+    }
+
 }

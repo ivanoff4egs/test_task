@@ -7,6 +7,7 @@ use App\DataObjects\DataObjectFactory;
 use App\Providers\BinlistCardInfoProvider;
 use App\Services\CardInfoService;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CardInfoService::class)]
@@ -36,5 +37,26 @@ class CardInfoServiceTest extends TestCase
     {
         $card = $this->cardInfoService->getCardInfo('bin');
         $this->assertInstanceOf(Card::class, $card);
+    }
+
+    public static function isEUCardDataProvider(): array
+    {
+        $euCard = $nonEuCard = new Card();
+        $euCard->setCountry('DE');
+        $nonEuCard->setCountry('JP');
+
+
+        return [
+            [$euCard],
+            [$nonEuCard],
+        ];
+    }
+
+    #[DataProvider('isEUCardDataProvider')]
+    public function testIsEUCard(Card $card): void
+    {
+        $result = $this->cardInfoService->isEUCard($card);
+
+        $card->getCountry() === 'JP' ? $this->assertFalse($result) : $this->assertTrue($result);
     }
 }

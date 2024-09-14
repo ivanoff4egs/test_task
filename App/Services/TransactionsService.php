@@ -47,7 +47,8 @@ class TransactionsService
         $amount = $transaction->getAmount() / $currencyRate->getRate();
         $comission = $isEuCard ? $this->config->get('eu_cards_comission') : $this->config->get('non_eu_cards_comission');
         $comissionAmount = round($amount * $comission, 2);
-        $transaction->setComission($comissionAmount);
+        $comission = $this->dataObjectFactory->createComission('EUR', $comissionAmount);
+        $transaction->setComission($comission);
 
         return $transaction;
     }

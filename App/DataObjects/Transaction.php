@@ -10,14 +10,14 @@ class Transaction
 
     private string $currency;
 
-    private float $comission;
+    private Comission $comission;
 
-    public function getComission(): float
+    public function getComission(): Comission
     {
         return $this->comission;
     }
 
-    public function setComission(float $comission): void
+    public function setComission(Comission $comission): void
     {
         $this->comission = $comission;
     }

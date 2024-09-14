@@ -11,9 +11,6 @@ class RatesService
 {
     private array $rates;
 
-    /**
-     * @throws AppException
-     */
     public function __construct(
         private readonly ProviderInterface $provider,
         private readonly DataObjectFactory $dataObjectFactory,

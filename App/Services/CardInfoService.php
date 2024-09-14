@@ -28,8 +28,8 @@ class CardInfoService
         return $this->dataObjectFactory->createCard($cardData);
     }
 
-    public function isEUCard(string $alpha2Country): bool
+    public function isEUCard(Card $card): bool
     {
-        return in_array($alpha2Country, array_column(EUCountries::cases(), 'name'));
+        return in_array($card->getCountry(), array_column(EUCountries::cases(), 'name'));
     }
 }

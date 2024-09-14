@@ -45,7 +45,7 @@ try {
      */
     foreach ($transactions as $transaction) {
         $card = $cardInfoService->getCardInfo($transaction->getBin());
-        $isEUCard = $cardInfoService->isEUCard($card->getCountry());
+        $isEUCard = $cardInfoService->isEUCard($card);
 
         $rate = $ratesService->getRate($transaction->getCurrency());
         $transaction = $transactionsService->calculateComission(
@@ -53,7 +53,7 @@ try {
             transaction: $transaction,
             isEuCard: $isEUCard
         );
-        print ($transaction->getComission() . 'EUR' . PHP_EOL);
+        print $transaction->getComission()->getAmount() . $transaction->getComission()->getCurrency() . PHP_EOL;
     }
 } catch (AppException $e) {
     print ($e->getMessage() . PHP_EOL);
