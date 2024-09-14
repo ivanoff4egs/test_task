@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\DataObjects;
 
+use App\DataObjects\Card;
+use App\DataObjects\Comission;
+use App\DataObjects\CurrencyRate;
 use App\DataObjects\DataObjectFactory;
 use App\DataObjects\Transaction;
 use App\Exceptions\AppException;
@@ -29,28 +32,45 @@ class DataObjectFactoryTest extends TestCase
     public static function createTransactionDataProvider(): array
     {
         return [
-            [self::VALID_TRANSACTION_DATA],
-            [self::INVALID_TRANSACTION_DATA]
+            [self::VALID_TRANSACTION_DATA, true],
+            [self::INVALID_TRANSACTION_DATA, false]
         ];
     }
 
     #[DataProvider('createTransactionDataProvider')]
-    public function testCreateTransaction(array $data): void
+    public function testCreateTransaction(array $data, bool $expectedResult): void
     {
-        if ($data == self::VALID_TRANSACTION_DATA) {
-            $transaction = $this->factory->createTransaction(self::VALID_TRANSACTION_DATA);
-
-            $this->assertInstanceOf(Transaction::class, $transaction);
-            $this->assertNotEmpty($transaction->getBin());
-            $this->assertNotEmpty($transaction->getAmount());
-            $this->assertNotEmpty($transaction->getCurrency());
-        } else {
-            try {
-                $this->factory->createTransaction(self::INVALID_TRANSACTION_DATA);
-                $this->fail("Expected Exception not thrown");
-            } catch (\Exception $e) {
-                $this->assertInstanceOf(AppException::class, $e);
-            }
+        if (!$expectedResult) {
+            $this->expectException(AppException::class);
         }
+        $transaction = $this->factory->createTransaction($data);
+
+        $this->assertInstanceOf(Transaction::class, $transaction);
+        $this->assertNotEmpty($transaction->getBin());
+        $this->assertNotEmpty($transaction->getAmount());
+        $this->assertNotEmpty($transaction->getCurrency());
+    }
+
+    public function testCreateCard()
+    {
+        $card = $this->factory->createCard(['country' => ['alpha2' => 'DK']]);
+        $this->assertInstanceOf(Card::class, $card);
+        $this->assertNotEmpty($card->getCountry());
+    }
+
+    public function testCreateCurrencyRate()
+    {
+        $rate = $this->factory->createCurrencyRate('USD', 1.1);
+        $this->assertInstanceOf(CurrencyRate::class, $rate);
+        $this->assertNotEmpty($rate->getCurrencyTo());
+        $this->assertNotEmpty($rate->getRate());
+    }
+
+    public function testCreateComission()
+    {
+        $comission = $this->factory->createComission('EUR', 1.2);
+        $this->assertInstanceOf(Comission::class, $comission);
+        $this->assertNotEmpty($comission->getAmount());
+        $this->assertNotEmpty($comission->getCurrency());
     }
 }
