@@ -88,5 +88,4 @@ class TransactionsServiceTest extends TestCase
     {
         unset($this->transactionsManager);
     }
-
 }
