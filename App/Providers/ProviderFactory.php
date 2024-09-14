@@ -2,14 +2,19 @@
 
 namespace App\Providers;
 
+use App\Exceptions\AppException;
 use GuzzleHttp\Client;
 
 class ProviderFactory
 {
     public function createProvider(Client $client, array $providerConfig): ProviderInterface
     {
-        $class = $providerConfig['class'];
+        $class = $providerConfig['class'] ?? '';
 
-        return new $class($client, $providerConfig);
+        if (class_exists($class)) {
+            return new $class($client, $providerConfig);
+        }
+
+        throw new AppException("Provider class {$class} not found");
     }
 }
